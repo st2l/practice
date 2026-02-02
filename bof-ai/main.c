@@ -25,19 +25,21 @@ int check_bad_payload(char *s) {
 
 int junk() { puts("its junk bro..."); }
 int junk1() { puts("its junk bro..."); }
-int junk2() { puts("its junk bro..."); }
-int junk3() { puts("its junk bro..."); }
-int junk4() { puts("its junk bro..."); }
-int junk5() { puts("its junk bro..."); }
-int junk6() { puts("its junk bro..."); }
-int junk7() { puts("its junk bro..."); }
+// int junk2() { puts("its junk bro..."); }
+// int junk3() { puts("its junk bro..."); }
+// int junk4() { puts("its junk bro..."); }
+// int junk5() { puts("its junk bro..."); }
+// int junk6() { puts("its junk bro..."); }
+// int junk7() { puts("its junk bro..."); }
 
 int instance(int check_ai);
 
-void m() { instance(1); }
+void m() {
+  setvbuf(stdout, NULL, _IONBF, 0);
+  instance(1);
+}
 
 int instance(int check_ai) {
-
   puts("Hello! I am bof AI assistant. I can do some things if u ask me.");
   puts("> ");
 
