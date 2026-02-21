@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-FLAG_VALUE="${FLAG:-CTF{test_flag}}"
+FLAG_VALUE="${FLAG:-practice{test_flag}}"
 PORT_VALUE="${PORT:-1337}"
 
 mkdir -p /app/build
