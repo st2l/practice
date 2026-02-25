@@ -2,7 +2,7 @@ from pwn import *
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
-exe = ELF(str(BASE_DIR / "chat_ai"))
+exe = ELF(str(BASE_DIR / "build/chat_ai"))
 
 context.terminal = ["tmux", "splitw", "-h"]
 
