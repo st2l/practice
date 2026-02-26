@@ -27,6 +27,7 @@
 
 ```bash
 cd bof-ai
+make
 docker compose up --build -d
 ```
 
@@ -80,4 +81,3 @@ python3 solve.py HOST=127.0.0.1 PORT=1337
 ```
 
 Скрипт отправляет специально подобранные данные и переводит выполнение к печати `flag.txt`.
-
