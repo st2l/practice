@@ -18,7 +18,6 @@ int main(int argc, char *argv[]) {
   while (1) {
     puts("Choose option:\n1) Change name\n2) Create note\n3) Edit note\n0) Exit");
     scanf("%d", &option);
-    printf("%d", option);
 
     switch (option) {
       case 0:
@@ -27,12 +26,12 @@ int main(int argc, char *argv[]) {
 
       case 1:
         puts("Enter your name: ");
-        scanf("%s", name);
+      	read(0, name, 100);
         printf("Well... your new name! -> %s", name);
         break;
 
       case 2:
-        if (g_count == 9) {
+        if (g_count >= 10) {
           puts("No more notes for you today...");
           goto exit_loop;
         }
@@ -47,7 +46,7 @@ int main(int argc, char *argv[]) {
         puts("Enter index of note");
         scanf("%d", &idx);
         puts("Now write new data to your note!");
-        scanf("%s", arr[idx]);
+        scanf("%63s", arr[idx]);
         puts("Nice!");
         break;
     }
