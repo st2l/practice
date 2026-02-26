@@ -1,4 +1,4 @@
 
 app:
 	mkdir -p bin
-	gcc main.c -o bin/notes_manager
+	gcc -g -O0 main.c -o bin/notes_manager
