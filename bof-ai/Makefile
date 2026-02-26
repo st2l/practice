@@ -4,7 +4,7 @@ BUILD = build
 TARGET = chat_ai
 
 CFLAGS = -O0 -fno-stack-protector -fno-omit-frame-pointer -fno-optimize-sibling-calls -fstack-reuse=none -no-pie -fno-pie
-LDFLAGS = -static -no-pie
+LDFLAGS = -no-pie
 
 all: $(BUILD)/$(TARGET)
 

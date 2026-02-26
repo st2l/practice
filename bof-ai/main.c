@@ -25,12 +25,18 @@ int check_bad_payload(char *s) {
 
 int junk() { puts("its junk bro..."); }
 int junk1() { puts("its junk bro..."); }
-// int junk2() { puts("its junk bro..."); }
-// int junk3() { puts("its junk bro..."); }
-// int junk4() { puts("its junk bro..."); }
-// int junk5() { puts("its junk bro..."); }
-// int junk6() { puts("its junk bro..."); }
-// int junk7() { puts("its junk bro..."); }
+int junk2() { puts("its junk bro..."); }
+int junk3() { puts("its junk bro..."); }
+int junk4() { puts("its junk bro..."); }
+int junk5() { puts("its junk bro..."); }
+int junk6() { puts("its junk bro..."); }
+int junk7() { puts("its junk bro..."); }
+int junk8() { puts("its junk bro..."); }
+int junk9() { puts("its junk bro..."); }
+int junk10() { puts("its junk bro..."); }
+int junk11() { puts("its junk bro..."); }
+int junk12() { puts("its junk bro..."); }
+int junk13() { puts("its junk bro..."); }
 
 int instance(int check_ai);
 
