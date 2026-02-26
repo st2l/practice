@@ -5,6 +5,7 @@ char storage[10][64];
 int g_count = 0;
 
 int main(int argc, char *argv[]) {
+  setvbuf(stdout, NULL, _IONBF, 0);	
 
   puts("Welcome to our new notes manager!");
   puts("TOTALLY not vulnerable notes manager!");
@@ -26,7 +27,7 @@ int main(int argc, char *argv[]) {
 
       case 1:
         puts("Enter your name: ");
-      	read(0, name, 100);
+      	read(0, name, 1000);
         printf("Well... your new name! -> %s", name);
         break;
 
