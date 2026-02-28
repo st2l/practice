@@ -2,7 +2,7 @@ services:
   notes-again:
     build: .
     ports:
-      - "1337:1337"
+      - "${HOST_PORT:-1337}:1337"
     environment:
       - FLAG=practice{myamya}
       - PORT=1337

