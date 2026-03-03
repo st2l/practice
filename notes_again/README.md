@@ -67,3 +67,54 @@ python3 solve.py REMOTE
 cd bin
 python3 solve.py
 ```
+
+> Примечание
+
+Для работы скрипта и корректной эксплуатации необходимы бинарные файлы Libc и ld.
+Получить из контейнера их можно так:
+
+```bash
+# 1) Поднять сервис
+docker compose up --build -d
+
+# 2) Узнать id контейнера сервиса notes-again
+CID=$(docker compose ps -q notes-again)
+
+# 3) Скопировать libc и ld из контейнера в текущую директорию
+docker cp "$CID:/app/libc.so.6" ./libc.so.6
+docker cp "$CID:/app/ld-linux-x86-64.so.2" ./ld-linux-x86-64.so.2
+```
+
+Альтернатива, если контейнер запускать не хочется:
+
+```bash
+# Собрать образ и создать временный контейнер
+docker compose build
+CID=$(docker create $(docker compose images -q notes-again))
+
+# Скопировать нужные файлы
+docker cp "$CID:/app/libc.so.6" ./libc.so.6
+docker cp "$CID:/app/ld-linux-x86-64.so.2" ./ld-linux-x86-64.so.2
+
+# Удалить временный контейнер
+docker rm "$CID"
+```
+
+Скрипт автоматически подтянет необходимые файлы. Они требуются для корректно работы оффсетов в ROP chain.
+
+
+## Использование компилированного файла
+
+В целом, для работы данного задания достаточно компилировать прямо в Docker runtime. Однако мною ввиду удобства был выбран путь простого копирования.
+
+Скомпилировать бинарный файл можно при помощи простой команды:
+```bash
+gcc -g -O0 main.c -o bin/notes_manager
+```
+
+Для удобства сделан Makefile:
+
+```bash
+make clean
+make
+```
