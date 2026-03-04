@@ -1,13 +1,14 @@
 FROM ubuntu:22.04
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends socat \
+    && apt-get install -y --no-install-recommends socat make gcc libc6-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY bin/notes_manager /app/bin/notes_manager
-COPY bin/ld-linux-x86-64.so.2 /app/ld-linux-x86-64.so.2
-COPY bin/libc.so.6 /app/libc.so.6
+COPY Makefile main.c /app/
+COPY ld-linux-x86-64.so.2 /app/ld-linux-x86-64.so.2
+COPY libc.so.6 /app/libc.so.6
+RUN make app
 
 ENV LD_LIBRARY_PATH=/app
 
