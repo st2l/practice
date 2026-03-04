@@ -5,7 +5,7 @@
 from pwn import *
 
 # Set up pwntools for the correct architecture
-exe = context.binary = ELF(args.EXE or 'notes_manager')
+exe = context.binary = ELF(args.EXE or 'bin/notes_manager')
 libc = ELF('./libc.so.6')
 
 # Many built-in settings can be controlled on the command-line and show up
