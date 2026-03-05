@@ -1,0 +1,9 @@
+services:
+  tcache-poisoning:
+    build: .
+    ports:
+      - "127.0.0.1:1337:1337"
+    environment:
+      - FLAG=practice{tcache_poisoning}
+      - PORT=1337
+    restart: unless-stopped
