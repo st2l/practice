@@ -5,9 +5,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY build/voice_coach /app/build/voice_coach
+COPY build/got_overwrite_exit /app/build/got_overwrite_exit
 
 COPY entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh /app/build/voice_coach
+RUN chmod +x /app/entrypoint.sh /app/build/got_overwrite_exit
 
 ENTRYPOINT ["/app/entrypoint.sh"]

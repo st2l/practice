@@ -1,5 +1,5 @@
 services:
-  bof-ai:
+  got-overwrite-exit:
     build: .
     environment:
       - FLAG=${FLAG}
@@ -10,7 +10,7 @@ services:
       - "owl.proxy=true"
       - "owl.proxy.port=1337"
       - "owl.label.conntype=nc"
-      - "owl.label.comment=bof-ai service"
+      - "owl.label.comment=got-overwrite-exit service"
     networks:
       - net
     restart: unless-stopped

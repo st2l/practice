@@ -4,7 +4,7 @@
 
 static void banner(void) {
   puts("=== Voice Coach ===");
-  puts("We help you speak clearly.");
+  puts("i tried so hard...");
 }
 
 static void hint(void) {

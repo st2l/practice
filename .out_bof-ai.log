@@ -1,0 +1,14 @@
+[*] '/home/st2l/Documents/ctf/practice/bof-ai/build/chat_ai'
+    Arch:       amd64-64-little
+    RELRO:      Partial RELRO
+    Stack:      No canary found
+    NX:         NX enabled
+    PIE:        No PIE (0x400000)
+    Stripped:   No
+[x] Opening connection to 172.20.0.2 on port 1337
+[x] Opening connection to 172.20.0.2 on port 1337: Trying 172.20.0.2
+[+] Opening connection to 172.20.0.2 on port 1337: Done
+[*] Switching to interactive mode
+ 
+practice{test_flag}
+[*] Closed connection to 172.20.0.2 port 1337

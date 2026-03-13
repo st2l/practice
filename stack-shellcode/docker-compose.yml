@@ -1,9 +1,21 @@
 services:
   stack-shellcode:
     build: .
-    ports:
-      - "127.0.0.1:1337:1337"
     environment:
-      - FLAG=practice{stack_shellcode}
+      - FLAG=${FLAG}
       - PORT=1337
+    expose:
+      - "1337"
+    labels:
+      - "owl.proxy=true"
+      - "owl.proxy.port=1337"
+      - "owl.label.conntype=nc"
+      - "owl.label.comment=stack-shellcode service"
+    networks:
+      - net
     restart: unless-stopped
+
+networks:
+  net:
+    external: true
+    name: ctfd_frp_containers

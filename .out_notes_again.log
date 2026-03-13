@@ -1,0 +1,35 @@
+[*] '/home/st2l/Documents/ctf/practice/notes_again/bin/notes_manager'
+    Arch:       amd64-64-little
+    RELRO:      Partial RELRO
+    Stack:      Canary found
+    NX:         NX enabled
+    PIE:        PIE enabled
+    Stripped:   No
+    Debuginfo:  Yes
+[*] '/home/st2l/Documents/ctf/practice/notes_again/libc.so.6'
+    Arch:       amd64-64-little
+    RELRO:      Partial RELRO
+    Stack:      Canary found
+    NX:         NX enabled
+    PIE:        PIE enabled
+    SHSTK:      Enabled
+    IBT:        Enabled
+[x] Opening connection to localhost on port 1337
+[x] Opening connection to localhost on port 1337: Trying ::1
+[x] Opening connection to localhost on port 1337: Trying 127.0.0.1
+[ERROR] Could not connect to localhost on port 1337
+[-] Opening connection to localhost on port 1337: Failed
+Traceback (most recent call last):
+  File "/home/st2l/Documents/ctf/practice/notes_again/solve.py", line 48, in <module>
+    io = start()
+  File "/home/st2l/Documents/ctf/practice/notes_again/solve.py", line 21, in start
+    return remote('localhost',1337)
+  File "/usr/lib/python3.14/site-packages/pwnlib/tubes/remote.py", line 85, in __init__
+    self.sock   = self._connect(fam, typ)
+                  ~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/lib/python3.14/site-packages/pwnlib/tubes/remote.py", line 136, in _connect
+    self.error("Could not connect to %s on port %s", self.rhost, self.rport)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/site-packages/pwnlib/log.py", line 439, in error
+    raise PwnlibException(message % args)
+pwnlib.exception.PwnlibException: Could not connect to localhost on port 1337
