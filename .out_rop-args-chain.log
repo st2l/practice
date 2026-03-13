@@ -1,8 +1,0 @@
-[x] Opening connection to 172.20.0.2 on port 1337
-[x] Opening connection to 172.20.0.2 on port 1337: Trying 172.20.0.2
-[+] Opening connection to 172.20.0.2 on port 1337: Done
-[x] Receiving all data
-[x] Receiving all data: 0B
-[+] Receiving all data: Done (0B)
-[*] Closed connection to 172.20.0.2 port 1337
-

@@ -1,9 +1,0 @@
-[x] Opening connection to 172.20.0.2 on port 1337
-[x] Opening connection to 172.20.0.2 on port 1337: Trying 172.20.0.2
-[+] Opening connection to 172.20.0.2 on port 1337: Done
-[*] stack buffer @ 0x7ffd98a991d0
-[*] Switching to interactive mode
-Write your note:
-Stored. We'll review it soon.
-practice{test_flag}
-[*] Closed connection to 172.20.0.2 port 1337
