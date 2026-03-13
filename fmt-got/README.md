@@ -49,7 +49,7 @@ PoC: `solve.py`.
 
 ```bash
 cd fmt-got
-python3 solve.py HOST=127.0.0.1 PORT=1337
+python3 solve.py REMOTE
 ```
 
 После получения shell:

@@ -48,7 +48,7 @@ PoC: `solve.py`.
 
 ```bash
 cd tcache-poisoning
-python3 solve.py HOST=127.0.0.1 PORT=1337
+python3 solve.py REMOTE
 ```
 
 PoC использует локальные `libc.so.6` и `ld-linux-x86-64.so.2`. После успешной эксплуатации флаг выводится приложением.
